@@ -34,11 +34,11 @@ class Node < Formula
   uses_from_macos "zlib"
 
   on_macos do
-    depends_on "llvm" => [:build, :test] if DevelopmentTools.clang_build_version <= 1100
+    depends_on "llvm" => [:build, :test] if DevelopmentTools.clang_build_version <= 1300
   end
 
   fails_with :clang do
-    build 1100
+    build 1300
     cause <<~EOS
       error: calling a private constructor of class 'v8::internal::(anonymous namespace)::RegExpParserImpl<uint8_t>'
     EOS
@@ -54,7 +54,7 @@ class Node < Formula
   end
 
   def install
-    ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1100)
+    ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1300)
 
     # The new linker crashed during LTO due to high memory usage.
     ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
